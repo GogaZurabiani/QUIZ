@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo List</title>
+<style>
+:root {
+  --primary: #6c63ff;
+  --bg: #ffffff;
+  --text: #111111;
+  --border: #e0e0e0;
+}
+body.dark {
+  --bg: #1e1e1e;
+  --text: #ffffff;
+  --border: #333333;
+}
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+}
+h1 {
+  text-align: center;
+}
+.top-bar {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
+.search {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+}
+select, .theme-btn {
+  padding: 12px;
+  border-radius: 6px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+}
+.list {
+  margin-top: 20px;
+}
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+}
+.left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.checkbox.checked {
+  background: var(--primary);
+  color: #fff;
+}
+.text.done {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.actions button {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-size: 18px;
+}
+.empty {
+  text-align: center;
+  margin-top: 60px;
+  opacity: 0.5;
+}
+.add-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 28px;
+  border: none;
+  cursor: pointer;
+}
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal {
+  background: var(--bg);
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+}
+.modal input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+}
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+.modal-actions button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+}
+.cancel {
+  background: transparent;
+  color: var(--primary);
+}
+.apply {
+  background: var(--primary);
+  color: #fff;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>TODO LIST</h1>
+
+  <div class="top-bar">
+    <input class="search" placeholder="Search note...">
+    <select class="filter">
+      <option value="all">All</option>
+      <option value="complete">Complete</option>
+      <option value="incomplete">Incomplete</option>
+    </select>
+    <button class="theme-btn">🌙</button>
+  </div>
+
+  <div class="list"></div>
+  <div class="empty">No notes yet</div>
+</div>
+
+<button class="add-btn">+</button>
+
+<div class="modal-bg">
+  <div class="modal">
+    <h3>NEW NOTE</h3>
+    <input placeholder="Input your note...">
+    <div class="modal-actions">
+      <button class="cancel">Cancel</button>
+      <button class="apply">Apply</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const list = document.querySelector('.list')
+const empty = document.querySelector('.empty')
+const modalBg = document.querySelector('.modal-bg')
+const addBtn = document.querySelector('.add-btn')
+const applyBtn = document.querySelector('.apply')
+const cancelBtn = document.querySelector('.cancel')
+const input = document.querySelector('.modal input')
+const search = document.querySelector('.search')
+const filter = document.querySelector('.filter')
+const themeBtn = document.querySelector('.theme-btn')
+
+let notes = JSON.parse(localStorage.getItem('notes')) || []
+let theme = localStorage.getItem('theme') || 'light'
+
+if (theme === 'dark') document.body.classList.add('dark')
+
+function save() {
+  localStorage.setItem('notes', JSON.stringify(notes))
+}
+
+function render() {
+  list.innerHTML = ''
+  const q = search.value.toLowerCase()
+  const f = filter.value
+
+  const filtered = notes.filter(n => {
+    if (!n.text.toLowerCase().includes(q)) return false
+    if (f === 'complete') return n.done
+    if (f === 'incomplete') return !n.done
+    return true
+  })
+
+  empty.style.display = filtered.length ? 'none' : 'block'
+
+  filtered.forEach((n, i) => {
+    const item = document.createElement('div')
+    item.className = 'item'
+
+    const left = document.createElement('div')
+    left.className = 'left'
+
+    const cb = document.createElement('div')
+    cb.className = 'checkbox' + (n.done ? ' checked' : '')
+    cb.innerHTML = n.done ? '✓' : ''
+    cb.onclick = () => {
+      n.done = !n.done
+      save()
+      render()
+    }
+
+    const text = document.createElement('div')
+    text.className = 'text' + (n.done ? ' done' : '')
+    text.textContent = n.text
+
+    const actions = document.createElement('div')
+    actions.className = 'actions'
+
+    const del = document.createElement('button')
+    del.textContent = '🗑'
+    del.onclick = () => {
+      notes.splice(i,1)
+      save()
+      render()
+    }
+
+    left.append(cb, text)
+    actions.append(del)
+    item.append(left, actions)
+    list.append(item)
+  })
+}
+
+addBtn.onclick = () => modalBg.style.display = 'flex'
+cancelBtn.onclick = () => modalBg.style.display = 'none'
+
+applyBtn.onclick = () => {
+  if (!input.value.trim()) return
+  notes.push({ text: input.value, done: false })
+  input.value = ''
+  save()
+  render()
+  modalBg.style.display = 'none'
+}
+
+search.oninput = render
+filter.onchange = render
+
+themeBtn.onclick = () => {
+  document.body.classList.toggle('dark')
+  localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light')
+}
+
+render()
+</script>
+</body>
+</html>
