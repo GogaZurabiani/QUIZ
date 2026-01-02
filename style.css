@@ -1,0 +1,181 @@
+:root {
+  --primary: #6c63ff;
+  --bg: #ffffff;
+  --text: #000000;
+  --line: #e5e5ff;
+}
+
+body.dark {
+  --bg: #1f1f1f;
+  --text: #ffffff;
+  --line: #333;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.search-frame {
+  position: relative;
+  flex: 1;
+  height: 42px;
+}
+
+.search-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.search-input {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: transparent;
+  padding: 8px 14px;
+  outline: none;
+  color: var(--text);
+  font-size: 14px;
+}
+
+.filter {
+  height: 42px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0 12px;
+  border-radius: 6px;
+}
+
+.theme-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  background: var(--primary);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-icon {
+  width: 20px;
+  height: 20px;
+  background-image: url("assets/photos/moon.png");
+  background-size: 40px 20px;
+  background-position: 0 0;
+}
+
+body.dark .theme-icon {
+  background-position: -20px 0;
+}
+
+.list .item {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--primary);
+  cursor: pointer;
+}
+
+.checkbox.checked {
+  background: var(--primary);
+}
+
+.text.done {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.empty {
+  text-align: center;
+  margin-top: 40px;
+  opacity: 0.5;
+}
+
+.add-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-icon {
+  width: 22px;
+  height: 22px;
+  background-image: url("assets/photos/plus.png");
+  background-size: 44px 22px;
+  background-position: 0 0;
+}
+
+.add-btn:hover .add-icon {
+  background-position: -22px 0;
+}
+
+.modal-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: var(--bg);
+  padding: 25px;
+  width: 300px;
+  border-radius: 10px;
+}
+
+.note-input {
+  width: 100%;
+  padding: 10px;
+  margin: 20px 0;
+  border: 2px solid var(--primary);
+  border-radius: 6px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
