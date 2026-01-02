@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Todo</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>TODO LIST</h1>
+
+  <div class="top">
+    <div class="search-frame">
+      <img class="search-img" src="assets/SearchDark.png">
+      <input class="search-input" placeholder="Search note...">
+    </div>
+
+    <select class="filter">
+      <option value="all">ALL</option>
+      <option value="complete">Complete</option>
+      <option value="incomplete">Incomplete</option>
+    </select>
+
+    <button class="theme-btn">
+      <span class="theme-icon"></span>
+    </button>
+  </div>
+
+  <div class="list"></div>
+  <div class="empty">No notes yet</div>
+</div>
+
+<button class="add-btn">
+  <span class="add-icon"></span>
+</button>
+
+<div class="modal-bg">
+  <div class="modal">
+    <h3>NEW NOTE</h3>
+    <input class="note-input" placeholder="Input your note...">
+    <div class="actions">
+      <button class="cancel">Cancel</button>
+      <button class="apply">Apply</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
